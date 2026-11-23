@@ -68,7 +68,8 @@ class _StandingsView extends StatelessWidget {
             child: ListView.separated(
               itemCount: standings.length,
               separatorBuilder: (_, _) => const Divider(height: 1),
-              itemBuilder: (context, index) => _FavoriteAwareTile(team: standings[index]),
+              itemBuilder: (context, index) =>
+                  _FavoriteAwareTile(team: standings[index]),
             ),
           ),
         },
