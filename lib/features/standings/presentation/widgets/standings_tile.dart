@@ -9,12 +9,14 @@ class StandingTile extends StatelessWidget {
     required this.isFavorite,
     required this.onFavoriteTap,
     this.onTap,
+    this.selected = false,
   });
 
   final TeamStanding standing;
   final bool isFavorite;
   final VoidCallback onFavoriteTap;
   final VoidCallback? onTap;
+  final bool selected;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,8 @@ class StandingTile extends StatelessWidget {
 
     return ListTile(
       onTap: onTap,
+      selected: selected,
+      selectedTileColor: Theme.of(context).colorScheme.primaryContainer,
       leading: SizedBox(
         width: 72,
         child: Row(
@@ -31,9 +35,7 @@ class StandingTile extends StatelessWidget {
               child: Text(
                 '${standing.position}',
                 textAlign: TextAlign.center,
-                style: textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(width: 8),
@@ -80,9 +82,9 @@ class TeamCrest extends StatelessWidget {
 
     return Image.network(
       url,
+      key: ValueKey(url),
       width: size,
       height: size,
-      // En web: si la imagen tiene problemas de CORS, la muestra con <img> del navegador
       webHtmlElementStrategy: WebHtmlElementStrategy.fallback,
       errorBuilder: (_, _, _) => fallback,
     );
