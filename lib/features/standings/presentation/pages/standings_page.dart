@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:liga_app/features/standings/domain/entities/team_standing.dart';
 import 'package:liga_app/features/standings/presentation/widgets/standings_tile.dart';
 
 import '../../../../core/di/injection.dart';
+import '../../../favorites/data/favorite_team.dart';
+import '../../../favorites/presentation/favorites_provider.dart';
 import '../bloc/standings_bloc.dart';
 import '../bloc/standings_event.dart';
 import '../bloc/standings_state.dart';
@@ -29,6 +32,11 @@ class _StandingsView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Liga App'),
         actions: [
+          IconButton(
+            tooltip: 'Mis favoritos',
+            icon: const Icon(Icons.star),
+            onPressed: () => context.go('/favorites'),
+          ),
           PopupMenuButton<String>(
             icon: const Icon(Icons.emoji_events_outlined),
             tooltip: 'Cambiar liga',
@@ -60,17 +68,39 @@ class _StandingsView extends StatelessWidget {
             child: ListView.separated(
               itemCount: standings.length,
               separatorBuilder: (_, _) => const Divider(height: 1),
-              itemBuilder: (context, index) {
-                final team = standings[index];
-                return StandingTile(
-                  standing: team,
-                  onTap: () => context.go('/team/${team.teamId}', extra: team),
-                );
-              },
+              itemBuilder: (context, index) => _FavoriteAwareTile(team: standings[index]),
             ),
           ),
         },
       ),
+    );
+  }
+}
+
+/// Una fila de la tabla que sabe si su equipo es favorito.
+/// Es un widget aparte para que `select` redibuje SÓLO esta fila.
+class _FavoriteAwareTile extends StatelessWidget {
+  const _FavoriteAwareTile({required this.team});
+
+  final TeamStanding team;
+
+  @override
+  Widget build(BuildContext context) {
+    final isFavorite = context.select<FavoritesProvider, bool>(
+      (provider) => provider.isFavorite(team.teamId),
+    );
+
+    return StandingTile(
+      standing: team,
+      isFavorite: isFavorite,
+      onFavoriteTap: () => context.read<FavoritesProvider>().toggle(
+        FavoriteTeam(
+          teamId: team.teamId,
+          name: team.shortName,
+          crestUrl: team.crestUrl,
+        ),
+      ),
+      onTap: () => context.go('/team/${team.teamId}', extra: team),
     );
   }
 }

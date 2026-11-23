@@ -3,9 +3,17 @@ import 'package:flutter/material.dart';
 import '../../domain/entities/team_standing.dart';
 
 class StandingTile extends StatelessWidget {
-  const StandingTile({super.key, required this.standing, this.onTap});
+  const StandingTile({
+    super.key,
+    required this.standing,
+    required this.isFavorite,
+    required this.onFavoriteTap,
+    this.onTap,
+  });
 
   final TeamStanding standing;
+  final bool isFavorite;
+  final VoidCallback onFavoriteTap;
   final VoidCallback? onTap;
 
   @override
@@ -37,9 +45,22 @@ class StandingTile extends StatelessWidget {
       subtitle: Text(
         'PJ ${standing.playedGames} · G ${standing.won} · E ${standing.draw} · P ${standing.lost}',
       ),
-      trailing: Text(
-        '${standing.points} pts',
-        style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            '${standing.points} pts',
+            style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          IconButton(
+            tooltip: isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos',
+            icon: Icon(
+              isFavorite ? Icons.star : Icons.star_border,
+              color: isFavorite ? Colors.amber : null,
+            ),
+            onPressed: onFavoriteTap,
+          ),
+        ],
       ),
     );
   }
