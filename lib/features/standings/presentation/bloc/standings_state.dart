@@ -17,14 +17,14 @@ final class StandingsLoading extends StandingsState {
   const StandingsLoading();
 }
 
-final class StandingsLoaded extends StandingsState{
+final class StandingsLoaded extends StandingsState {
   const StandingsLoaded(this.standings);
   final List<TeamStanding> standings;
   @override
   List<Object?> get props => [standings];
 }
 
-final class StandingsError extends StandingsState{
+final class StandingsError extends StandingsState {
   final String message;
   const StandingsError(this.message);
   @override

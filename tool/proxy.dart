@@ -1,10 +1,13 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:io';
 
 Future<void> main() async {
   // 1. Lee la API key del archivo env/dev.json
-  final config =
-      jsonDecode(await File('env/dev.json').readAsString()) as Map<String, dynamic>;
+  final config = jsonDecode(
+    await File('env/dev.json').readAsString(),
+  ) as Map<String, dynamic>;
   final apiKey = config['FOOTBALL_API_KEY'] as String;
 
   // 2. Crea el "cliente" para hablar con la API real

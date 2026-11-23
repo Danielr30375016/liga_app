@@ -1,5 +1,3 @@
-
-
 import 'package:equatable/equatable.dart';
 
 sealed class StandingsEvent extends Equatable {
@@ -7,13 +5,14 @@ sealed class StandingsEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
 /// La pantalla se abrió o el usuario tocó "Reintentar"
-final class StandingsRequested extends StandingsEvent{
+final class StandingsRequested extends StandingsEvent {
   const StandingsRequested();
 }
 
 /// El usuario eligió otra liga (PD = LaLiga, PL = Premier League)
-final class CompetitionChanged extends StandingsEvent{
+final class CompetitionChanged extends StandingsEvent {
   const CompetitionChanged(this.competition);
   final String competition;
   @override

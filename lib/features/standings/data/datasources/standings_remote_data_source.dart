@@ -10,8 +10,10 @@ class StandingsRemoteDataSourceImpl implements StandingsRemoteDataSource {
   final Dio _dio;
 
   @override
-  Future<List<StandingModel>> fetchStandings(String competition) async{
-    final response = await _dio.get<Map<String, dynamic>>('competitions/$competition/standings');
+  Future<List<StandingModel>> fetchStandings(String competition) async {
+    final response = await _dio.get<Map<String, dynamic>>(
+      'competitions/$competition/standings',
+    );
     final standings = response.data!['standings'] as List<dynamic>;
     // La API trae varias tablas (TOTAL, HOME, AWAY). Usamos la general.
     final total = standings.firstWhere(
@@ -23,5 +25,4 @@ class StandingsRemoteDataSourceImpl implements StandingsRemoteDataSource {
         .map((row) => StandingModel.fromJson(row as Map<String, dynamic>))
         .toList();
   }
-  
 }

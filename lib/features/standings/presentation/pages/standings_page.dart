@@ -43,31 +43,32 @@ class _StandingsView extends StatelessWidget {
       ),
       body: BlocBuilder<StandingsBloc, StandingsState>(
         builder: (context, state) => switch (state) {
-          StandingsInitial() || StandingsLoading() =>
-            const Center(child: CircularProgressIndicator()),
+          StandingsInitial() || StandingsLoading() => const Center(
+            child: CircularProgressIndicator(),
+          ),
           StandingsError(:final message) => _ErrorView(
-              message: message,
-              onRetry: () =>
-                  context.read<StandingsBloc>().add(const StandingsRequested()),
-            ),
+            message: message,
+            onRetry: () =>
+                context.read<StandingsBloc>().add(const StandingsRequested()),
+          ),
           StandingsLoaded(:final standings) => RefreshIndicator(
-              onRefresh: () async {
-                final bloc = context.read<StandingsBloc>()
-                  ..add(const StandingsRequested());
-                await bloc.stream.firstWhere((s) => s is! StandingsLoading);
+            onRefresh: () async {
+              final bloc = context.read<StandingsBloc>()
+                ..add(const StandingsRequested());
+              await bloc.stream.firstWhere((s) => s is! StandingsLoading);
+            },
+            child: ListView.separated(
+              itemCount: standings.length,
+              separatorBuilder: (_, _) => const Divider(height: 1),
+              itemBuilder: (context, index) {
+                final team = standings[index];
+                return StandingTile(
+                  standing: team,
+                  onTap: () => context.go('/team/${team.teamId}', extra: team),
+                );
               },
-              child: ListView.separated(
-                itemCount: standings.length,
-                separatorBuilder: (_, _) => const Divider(height: 1),
-                itemBuilder: (context, index) {
-                  final team = standings[index];
-                  return StandingTile(
-                    standing: team,
-                    onTap: () => context.go('/team/${team.teamId}', extra: team),
-                  );
-                },
-              ),
             ),
+          ),
         },
       ),
     );

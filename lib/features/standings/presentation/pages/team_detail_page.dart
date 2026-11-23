@@ -15,7 +15,9 @@ class TeamDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(team?.shortName ?? 'Equipo')),
       body: team == null
-          ? const Center(child: Text('Equipo no encontrado. Vuelve a la tabla.'))
+          ? const Center(
+              child: Text('Equipo no encontrado. Vuelve a la tabla.'),
+            )
           : ListView(
               padding: const EdgeInsets.all(24),
               children: [
@@ -29,11 +31,17 @@ class TeamDetailPage extends StatelessWidget {
                 const SizedBox(height: 24),
                 _StatRow(label: 'Posición', value: '${team.position}°'),
                 _StatRow(label: 'Puntos', value: '${team.points}'),
-                _StatRow(label: 'Partidos jugados', value: '${team.playedGames}'),
+                _StatRow(
+                  label: 'Partidos jugados',
+                  value: '${team.playedGames}',
+                ),
                 _StatRow(label: 'Ganados', value: '${team.won}'),
                 _StatRow(label: 'Empatados', value: '${team.draw}'),
                 _StatRow(label: 'Perdidos', value: '${team.lost}'),
-                _StatRow(label: 'Diferencia de gol', value: '${team.goalDifference}'),
+                _StatRow(
+                  label: 'Diferencia de gol',
+                  value: '${team.goalDifference}',
+                ),
               ],
             ),
     );

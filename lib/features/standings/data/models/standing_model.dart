@@ -45,16 +45,16 @@ class StandingModel {
   }
 
   TeamStanding toEntity() => TeamStanding(
-        position: position,
-        teamId: teamId,
-        teamName: teamName,
-        shortName: shortName,
-        crestUrl: crestUrl,
-        playedGames: playedGames,
-        won: won,
-        draw: draw,
-        lost: lost,
-        points: points,
-        goalDifference: goalDifference,
-      );
+    position: position,
+    teamId: teamId,
+    teamName: teamName,
+    shortName: shortName,
+    crestUrl: crestUrl,
+    playedGames: playedGames,
+    won: won,
+    draw: draw,
+    lost: lost,
+    points: points,
+    goalDifference: goalDifference,
+  );
 }
