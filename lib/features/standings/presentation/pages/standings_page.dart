@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:liga_app/core/platform/share_services.dart';
 import 'package:liga_app/features/standings/presentation/widgets/standings_tile.dart';
-import 'package:provider/provider.dart';
+
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/responsive/breakpoints.dart';
@@ -62,15 +62,17 @@ class _StandingsView extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<StandingsBloc, StandingsState>(
           builder: (context, state) => switch (state) {
-            StandingsInitial() || StandingsLoading() =>
-              const Center(child: CircularProgressIndicator.adaptive()),
+            StandingsInitial() || StandingsLoading() => const Center(
+              child: CircularProgressIndicator.adaptive(),
+            ),
             StandingsError(:final message) => _ErrorView(
-                message: message,
-                onRetry: () =>
-                    context.read<StandingsBloc>().add(const StandingsRequested()),
-              ),
-            StandingsLoaded(:final standings) =>
-              _ResponsiveStandings(standings: standings),
+              message: message,
+              onRetry: () =>
+                  context.read<StandingsBloc>().add(const StandingsRequested()),
+            ),
+            StandingsLoaded(:final standings) => _ResponsiveStandings(
+              standings: standings,
+            ),
           },
         ),
       ),
@@ -85,7 +87,8 @@ class _StandingsView extends StatelessWidget {
         .take(5)
         .map((t) => '${t.position}. ${t.shortName} - ${t.points} pts')
         .join('\n');
-    final text = '🏆 Tabla de posiciones - Top 5\n$top5\n\nCompartido desde Liga App ⚽';
+    final text =
+        '🏆 Tabla de posiciones - Top 5\n$top5\n\nCompartido desde Liga App ⚽';
 
     final messenger = ScaffoldMessenger.of(context);
 
@@ -135,9 +138,14 @@ class _ResponsiveStandingsState extends State<_ResponsiveStandings> {
           selectedTeamId: isExpanded ? _selected?.teamId : null,
           onTeamTap: (team) {
             if (isExpanded) {
-              setState(() => _selected = team); // ancho: muestra el detalle al lado
+              setState(
+                () => _selected = team,
+              ); // ancho: muestra el detalle al lado
             } else {
-              context.go('/team/${team.teamId}', extra: team); // celular: navega
+              context.go(
+                '/team/${team.teamId}',
+                extra: team,
+              ); // celular: navega
             }
           },
         );
@@ -160,10 +168,15 @@ class _ResponsiveStandingsState extends State<_ResponsiveStandings> {
             const VerticalDivider(width: 1),
             Expanded(
               child: selected == null
-                  ? const Center(child: Text('Selecciona un equipo para ver su detalle 👈'))
+                  ? const Center(
+                      child: Text(
+                        'Selecciona un equipo para ver su detalle 👈',
+                      ),
+                    )
                   : TeamDetailContent(
-                    key: ValueKey(selected.teamId),
-                    team: selected),
+                      key: ValueKey(selected.teamId),
+                      team: selected,
+                    ),
             ),
           ],
         );
@@ -187,7 +200,8 @@ class _StandingsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        final bloc = context.read<StandingsBloc>()..add(const StandingsRequested());
+        final bloc = context.read<StandingsBloc>()
+          ..add(const StandingsRequested());
         await bloc.stream.firstWhere((s) => s is! StandingsLoading);
       },
       child: ListView.separated(

@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 
 /// Breakpoints de Material 3
 abstract final class Breakpoints {
-  static const double medium = 600;   // tablet vertical
+  static const double medium = 600; // tablet vertical
   static const double expanded = 840; // tablet horizontal, web y escritorio
 }
 

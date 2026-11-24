@@ -16,7 +16,9 @@ class TeamDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(team?.shortName ?? 'Equipo')),
       body: team == null
-          ? const Center(child: Text('Equipo no encontrado. Vuelve a la tabla.'))
+          ? const Center(
+              child: Text('Equipo no encontrado. Vuelve a la tabla.'),
+            )
           : TeamDetailContent(team: team),
     );
   }

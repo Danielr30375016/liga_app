@@ -35,7 +35,9 @@ class StandingTile extends StatelessWidget {
               child: Text(
                 '${standing.position}',
                 textAlign: TextAlign.center,
-                style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                style: textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             const SizedBox(width: 8),
