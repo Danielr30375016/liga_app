@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:liga_app/core/platform/share_services.dart';
 import 'package:liga_app/features/standings/presentation/widgets/standings_tile.dart';
 
-
 import '../../../../core/di/injection.dart';
 import '../../../../core/responsive/breakpoints.dart';
 import '../../../favorites/data/favorite_team.dart';
