@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:liga_app/core/database/app_database.dart';
 import 'package:liga_app/core/network/dio_client.dart';
+import 'package:liga_app/core/platform/connectivity_service.dart';
 import 'package:liga_app/core/platform/share_services.dart';
 import 'package:liga_app/features/favorites/data/favorites_local_data_source.dart';
 import 'package:liga_app/features/standings/data/datasources/standings_remote_data_source.dart';
@@ -18,6 +19,10 @@ Future<void> setupInjection() async {
 
   // Plataforma
   sl.registerLazySingleton<ShareService>(() => const ShareService());
+
+  sl.registerLazySingleton<ConnectivityService>(
+    () => const ConnectivityService(),
+  );
 
   // red
   sl.registerLazySingleton<Dio>(DioClient.create);

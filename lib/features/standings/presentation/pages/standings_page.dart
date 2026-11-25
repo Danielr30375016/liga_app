@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:liga_app/core/platform/share_services.dart';
+import 'package:liga_app/core/widgets/connection_indicator.dart';
 import 'package:liga_app/features/standings/presentation/widgets/standings_tile.dart';
 
 import '../../../../core/di/injection.dart';
@@ -36,6 +37,12 @@ class _StandingsView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Liga App'),
         actions: [
+          const ConnectionIndicator(), // 👈 nuevo
+          IconButton(
+            tooltip: 'Compartir tabla',
+            icon: const Icon(Icons.share),
+            onPressed: () => _shareStandings(context),
+          ),
           IconButton(
             tooltip: 'Compartir tabla',
             icon: const Icon(Icons.share),

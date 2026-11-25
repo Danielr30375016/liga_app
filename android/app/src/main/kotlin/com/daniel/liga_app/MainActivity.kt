@@ -3,17 +3,19 @@ package com.daniel.liga_app
 import android.content.Intent
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
 
-class MainActivity : FlutterActivity(){
+class MainActivity : FlutterActivity() {
 
-    // El mismo nombre que en Dart. ¡Idéntico!
-    private val channelName = "com.daniel.liga_app/share"
+    private val shareChannel = "com.daniel.liga_app/share"
+    private val connectivityChannel = "com.daniel.liga_app/connectivity"
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelName)
+        // MethodChannel: compartir (Dart pregunta, Kotlin responde UNA vez)
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, shareChannel)
             .setMethodCallHandler { call, result ->
                 when (call.method) {
                     "shareText" -> {
@@ -28,6 +30,10 @@ class MainActivity : FlutterActivity(){
                     else -> result.notImplemented()
                 }
             }
+
+        // EventChannel: conexión (Kotlin avisa MUCHAS veces)
+        EventChannel(flutterEngine.dartExecutor.binaryMessenger, connectivityChannel)
+            .setStreamHandler(ConnectivityStreamHandler(this))
     }
 
     private fun shareText(text: String) {
