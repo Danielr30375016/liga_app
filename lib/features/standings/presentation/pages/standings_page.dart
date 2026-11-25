@@ -44,6 +44,11 @@ class _StandingsView extends StatelessWidget {
             onPressed: () => _shareStandings(context),
           ),
           IconButton(
+            tooltip: 'Compartir tabla',
+            icon: const Icon(Icons.share),
+            onPressed: () => _shareStandings(context),
+          ),
+          IconButton(
             tooltip: 'Mis favoritos',
             icon: const Icon(Icons.star),
             onPressed: () => context.go('/favorites'),
