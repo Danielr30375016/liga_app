@@ -1,25 +1,32 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform;
 import 'package:flutter/services.dart';
+import 'package:liga_app/core/platform/pigeon/share_api.g.dart';
 
 enum ShareResult { shared, copiedToClipboard }
 
 class ShareService {
-  const ShareService();
+  final ShareApi _api;
+  // La API de Pigeon se puede inyectar (útil para usar una falsa en los tests)
+  ShareService({ShareApi? api}) : _api = api ?? ShareApi();
 
-  // Mismo nombre que en Kotlin
-  static const _channel = MethodChannel('com.daniel.liga_app/share');
-
-  Future<ShareResult> shareText(String text) async {
-    if (!kIsWeb) {
-      try {
-        await _channel.invokeMethod<void>('shareText', {'text': text});
-        return ShareResult.shared;
-      } on MissingPluginException {
-        // Plataforma sin código nativo (por ejemplo, Windows): usamos el plan B
-      }
+  Future<ShareResult> share({
+    required String title,
+    required List<String> lines,
+  }) async {
+    // Sólo Android tiene la implementación nativa
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+      // ¡Enviamos un OBJETO con tipos, no un Map!
+      await _api.share(ShareMessage(title: title, lines: lines));
+      return ShareResult.shared;
     }
 
-    // Plan B: copiar al portapapeles
+    // Plan B (web, iOS, escritorio): copiar al portapapeles
+    final text = [
+      title,
+      ...lines,
+      '',
+      'Compartido desde Liga App ⚽',
+    ].join('\n');
     await Clipboard.setData(ClipboardData(text: text));
     return ShareResult.copiedToClipboard;
   }

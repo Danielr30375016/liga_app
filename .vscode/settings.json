@@ -2,5 +2,17 @@
   "dart.flutterRunAdditionalArgs": [
     "--dart-define-from-file=env/dev.json",
     "--web-port", "5000"
-  ]
+  ],
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.rulers": [80]
+  },
+  "[kotlin]": {
+    "editor.formatOnSave": true
+  }
 }

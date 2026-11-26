@@ -18,7 +18,7 @@ Future<void> setupInjection() async {
   sl.registerSingleton<AppDatabase>(database);
 
   // Plataforma
-  sl.registerLazySingleton<ShareService>(() => const ShareService());
+  sl.registerLazySingleton<ShareService>(() => ShareService());
 
   sl.registerLazySingleton<ConnectivityService>(
     () => const ConnectivityService(),

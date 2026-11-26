@@ -89,17 +89,18 @@ class _StandingsView extends StatelessWidget {
     final state = context.read<StandingsBloc>().state;
     if (state is! StandingsLoaded) return;
 
-    final top5 = state.standings
+    final lines = state.standings
         .take(5)
         .map((t) => '${t.position}. ${t.shortName} - ${t.points} pts')
-        .join('\n');
-    final text =
-        '🏆 Tabla de posiciones - Top 5\n$top5\n\nCompartido desde Liga App ⚽';
+        .toList();
 
     final messenger = ScaffoldMessenger.of(context);
 
     try {
-      final result = await sl<ShareService>().shareText(text);
+      final result = await sl<ShareService>().share(
+        title: '🏆 Tabla de posiciones - Top 5',
+        lines: lines,
+      );
       if (result == ShareResult.copiedToClipboard) {
         messenger.showSnackBar(
           const SnackBar(content: Text('Tabla copiada al portapapeles 📋')),
